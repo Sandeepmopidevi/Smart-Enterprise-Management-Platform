@@ -1,0 +1,6 @@
+@SmartEnterprise.NotificationService_HostAddress = http://localhost:5102
+
+GET {{SmartEnterprise.NotificationService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

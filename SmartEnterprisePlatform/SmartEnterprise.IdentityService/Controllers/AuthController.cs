@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -31,7 +32,10 @@ namespace SmartEnterprise.IdentityService.Controllers
             if (!result.Succeeded)
                 return BadRequest(result.Errors);
 
-            return Ok(new { Message = "User registered successfully." });
+            // 🔐 Assign "User" role after registration
+            await _userManager.AddToRoleAsync(user, "User");
+
+            return Ok(new { Message = "User registered successfully with role: User" });
         }
 
         [HttpPost("login")]
@@ -41,18 +45,39 @@ namespace SmartEnterprise.IdentityService.Controllers
             if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password))
                 return Unauthorized("Invalid credentials");
 
-            var token = GenerateJwtToken(user);
+            var roles = await _userManager.GetRolesAsync(user);
+            var token = GenerateJwtToken(user, roles);
             return Ok(new { Token = token });
         }
 
-        private string GenerateJwtToken(IdentityUser user)
+        // 🔧 Dev-only: Promote user to Admin role
+        [HttpPost("make-admin")]
+        [Authorize]
+        public async Task<IActionResult> MakeAdmin([FromBody] string email)
         {
-            var claims = new[]
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return NotFound("User not found");
+
+            await _userManager.AddToRoleAsync(user, "Admin");
+            return Ok("User promoted to Admin.");
+        }
+
+        private string GenerateJwtToken(IdentityUser user, IList<string> roles)
+        {
+            var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(ClaimTypes.NameIdentifier, user.Id)
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Name, user.Email)
             };
+
+            // 🔐 Add role claims
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
