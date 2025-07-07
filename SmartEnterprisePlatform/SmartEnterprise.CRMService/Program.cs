@@ -1,20 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using SmartEnterprise.HRService.Data;
-using SmartEnterprise.Shared.Models; // ✅ Using shared JWT settings
+using SmartEnterprise.Shared.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 🔐 Load and bind JwtSettings
+// 🔐 Load JWT settings from appsettings.json
 var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
-
-// 🔧 Register EF Core DbContext
-builder.Services.AddDbContext<HrDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // 🔐 JWT Authentication
 builder.Services.AddAuthentication(options =>
@@ -36,10 +30,10 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// 📘 Swagger with JWT support
+// 📘 Swagger with JWT Bearer support
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "HRService", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your Service Name", Version = "v1" });
 
     var jwtSecurityScheme = new OpenApiSecurityScheme
     {
@@ -48,7 +42,7 @@ builder.Services.AddSwaggerGen(c =>
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.Http,
-        Description = "Enter JWT Bearer token only (without Bearer keyword)",
+        Description = "Enter JWT token (without 'Bearer')",
         Reference = new OpenApiReference
         {
             Id = JwtBearerDefaults.AuthenticationScheme,
@@ -63,12 +57,13 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+// 🌐 Core services
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
-// 🌐 Middleware pipeline
+// 🚀 Middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -76,7 +71,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthentication();
+app.UseAuthentication(); // 🔐 Enable authentication middleware
 app.UseAuthorization();
 
 app.MapControllers();

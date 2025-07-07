@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartEnterprise.Notificatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartEnterprise.HRService", "SmartEnterprise.HRService\SmartEnterprise.HRService.csproj", "{F756DD4B-575E-42D9-8793-46C35B63E70A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartEnterprise.FinanceService", "SmartEnterprise.FinanceService\SmartEnterprise.FinanceService.csproj", "{984E612A-A883-4795-8C05-58BD327FDF15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartEnterprise.CRMService", "SmartEnterprise.CRMService\SmartEnterprise.CRMService.csproj", "{D6D3FE8F-D9A2-4B68-9F92-1BC1029456F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{F756DD4B-575E-42D9-8793-46C35B63E70A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F756DD4B-575E-42D9-8793-46C35B63E70A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F756DD4B-575E-42D9-8793-46C35B63E70A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{984E612A-A883-4795-8C05-58BD327FDF15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{984E612A-A883-4795-8C05-58BD327FDF15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{984E612A-A883-4795-8C05-58BD327FDF15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{984E612A-A883-4795-8C05-58BD327FDF15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6D3FE8F-D9A2-4B68-9F92-1BC1029456F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6D3FE8F-D9A2-4B68-9F92-1BC1029456F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6D3FE8F-D9A2-4B68-9F92-1BC1029456F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6D3FE8F-D9A2-4B68-9F92-1BC1029456F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

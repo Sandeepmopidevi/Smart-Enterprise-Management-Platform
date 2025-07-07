@@ -1,0 +1,6 @@
+@SmartEnterprise.CRMService_HostAddress = http://localhost:5150
+
+GET {{SmartEnterprise.CRMService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

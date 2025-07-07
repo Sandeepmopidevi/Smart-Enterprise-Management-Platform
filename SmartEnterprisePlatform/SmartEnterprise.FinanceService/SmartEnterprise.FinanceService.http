@@ -1,0 +1,6 @@
+@SmartEnterprise.FinanceService_HostAddress = http://localhost:5081
+
+GET {{SmartEnterprise.FinanceService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
